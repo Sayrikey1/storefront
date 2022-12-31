@@ -1,0 +1,18 @@
+<html>
+    <body>
+       {% if name %}
+       <h1>Sayrikey {{ name }} </h1>
+       {% else %}
+       <h1>Hello WORLD</h1>
+       {% endif %}
+
+       {% comment %} <ul>
+        {% for order in orders %}
+        <li>{{order.id}} - {{order.customer.first_name}}</li>
+        {%endfor%}
+       </ul> {% endcomment %}
+
+       <h1>{{result}}</h1>
+    </body>
+</html>
+
