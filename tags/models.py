@@ -20,6 +20,6 @@ class TaggedItem(models.Model):
     objects = TaggedItemManager()
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object  = GenericForeignKey()
+    object_id = models.PositiveIntegerField() #if id is an integer
+    content_object  = GenericForeignKey() #if id is a guid
     
