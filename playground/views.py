@@ -1,22 +1,38 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Value, F, Func
+from django.db.models import Value, F, Func, Count
 from django.db.models.functions import Concat
 from django.contrib.contenttypes.models import ContentType
-from store.models import Product, Order, Customer, Collection
+from store.models import Product, Order, Customer, Collection, OrderItem
 from tags.models import TaggedItem
 
-def say_hell(request):
-    x = 1
-    y = 2
+def say_hello(request):
+    
+    # products = Product.objects.filter(id__in = OrderItem.objects.values('product_id').distinct()).order_by('title')
+    
+    # for i in products:
+    #     print(i)
     
     #--------ONE---------
     
-    #queryset = Product.objects.filter(unit_price__range=(20,30))
+    # try:
+    #     product = Product.objects.get(pk=0)
+    # except ObjectDoesNotExist:
+    #     pass
+    
+    """   OR  """
+    
+    # product = Product.objects.get(pk=0).first()
+        
+    
+    #query_set = Product.objects.all()
+    #query_set = Product.objects.filter(unit_price__range=(20,30))
     #queryset = Product.objects.filter(id__in=OrderItem.objects.values('product_id').distinct()).order_by('title')
-    #queryset = Order.objects.select_related('customer').prefetch_related('orderitem_set__product').order_by('-placed_at')[:5]
+    queryset = Order.objects.select_related('customer').prefetch_related('orderitem_set__product')[:5]
     
-    
+    # for product in query_set:
+    #     print(product)
+        
     #---------TWO---------
     
     """Using the annotate expressions"""
@@ -38,6 +54,7 @@ def say_hell(request):
     #--> Referencing product's contenttype id
     # content_type = ContentType.objects.get_for_model(Product)  
     
+     # -----------------------------QUERYING GENERIC RELATIONSHIPS----------------------------#
     """Getting the tag of the items in the table referenced from content-type"""
     
     # queryset = TaggedItem.objects \
@@ -51,10 +68,16 @@ def say_hell(request):
     #             Check TaggedItemManager in Tags Model
     #   --->   TaggedItem.objects.get_tags_for(Product,1)
      
-    return render(request, 'hello.html', {'name': 'The GOAT', 'result':list(queryset)})
+    # -----------------------------GROUPING DATA----------------------------#
+    
+    # qryset = Customer.objects.annotate(
+    #     orders_count=Count('order')  #For some reason order works instead of order_set
+    #     )
+    
+    
+    return render(request, 'hello.html', {'name': 'The GOAT', 'result':list(qryset)})
 
-
-def say_hello(request):
+def say_hell(request):
     #-----Creating Objects-------->
     
     #NOTE: Item should exist b4 adding it to the created object

@@ -3,6 +3,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
 class TaggedItemManager(models.Manager):
+    
+    ''' Custom managers '''
+    
     def get_tags_for(self, obj_type, obj_id):
         content_type = ContentType.objects.get_for_model(obj_type)
         
